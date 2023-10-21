@@ -1,10 +1,10 @@
 setBackground(255, 255, 255)
 
-loadSprite("start", "../../sprites/start_button.png")
-loadSprite("gloves", "../../sprites/gloves_Button.png")
-loadSprite("leader", "../../sprites/leaderboards_Button.png")
-loadSprite("logo", "../../sprites/logo.png")
-loadSprite("nome", "../../sprites/game_name.png")
+loadSprite("start", "../../assets/imgs/menu/sprites/start_button.png")
+loadSprite("gloves", "../../assets/imgs/menu/sprites/gloves_Button.png")
+loadSprite("leader", "../../assets/imgs/menu/sprites/leaderboards_Button.png")
+loadSprite("logo", "../../assets/imgs/menu/sprites/logo.png")
+loadSprite("nome", "../../assets/imgs/menu/sprites/game_name.png")
 
 const screenWidth = width();
 const screenHeight = height();
