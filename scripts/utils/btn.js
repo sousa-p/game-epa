@@ -2,10 +2,10 @@ export function addButton(
   txt,
   position,
   funcClick,
+  tamanho = [240, 60],
   bgBtn = [0, 0, 0],
   outlineWidth = 3,
   outlineColor = [242, 53, 211],
-  tamanho = [240, 60],
   fontSize = 28,
   fontColor = [242, 53, 211],
   radius = 8
