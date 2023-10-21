@@ -1,90 +1,41 @@
-setBackground(255, 255, 255)
+import { addButton } from "../utils/btn.js";
 
-loadSprite("start", "../../assets/imgs/menu/sprites/start_button.png")
-loadSprite("gloves", "../../assets/imgs/menu/sprites/gloves_Button.png")
-loadSprite("leader", "../../assets/imgs/menu/sprites/leaderboards_Button.png")
-loadSprite("logo", "../../assets/imgs/menu/sprites/logo.png")
-loadSprite("nome", "../../assets/imgs/menu/sprites/game_name.png")
+loadSprite("cog", "../../assets/sprts/menu/cogIcon.svg")
 
-const screenWidth = width();
-const screenHeight = height();
 
-const LAYOUT = [
-    [
-        "                      ",
-        "           n          ",
-        "                      ",
-        "                      ",
-        "                      ",
-        "          =           ",
-        "                      ",
-        "                      ",
-        "                      ",
-        "                      ",
-        "                      ",
-        "          s           ",
-        "                      ",
-        "                      ",
-        "          g           ",
-        "                      ",
-        "          l           ",
-    ],
-]
+scene("menu", () => {
+    onUpdate(() => setCursor("default"));
 
-const larguraSprites = {
-    "start": 236,
-    "gloves": 173,
-    "leader": 173,
-    "logo": 94,
-    "nome": 176,
-};
+    const config = add([
+        sprite("cog"),
+        pos(340, 20),
+        area()
+    ]);
 
-const CONFIG = {
-    tileWidth: 1,
-    tileHeight: 30,
-    tiles: {
-        "s": () => [
-            sprite("start"),
-            area(),
-            pos((screenWidth / 2 - larguraSprites["start"] / 2), 1),
-        ],
-        "g": () => [
-            sprite("gloves"),
-            area(),
-            pos((screenWidth / 2 - larguraSprites["gloves"] / 2), 1),
-        ],
-        "l": () => [
-            sprite("leader"),
-            area(),
-            pos((screenWidth / 2 - larguraSprites["leader"] / 2), 1),
-        ],
-        "=": () => [
-            sprite("logo"),
-            area(),
-            pos((screenWidth / 2 - larguraSprites["logo"] / 2), 1),
-        ],
-        "n": () => [
-            sprite("nome"),
-            area(),
-            pos((screenWidth / 2 - larguraSprites["nome"] / 2), 1),
-        ],
-    },
-};
+    config.onClick(() => {
+        go('configs');
+    })
 
-scene("game", ({ levelId, coins } = { levelId: 0, coins: 0 }) => {
-    const pag = addLevel(LAYOUT[levelId ?? 0], CONFIG)
 
-    onClick("start", () => {
-        go("");
-    });
+	config.onHoverUpdate(() => {
+		setCursor("pointer");
+	})
+    
+    add([
+        text('Rhythm'),
+        pos(center().sub(120, 260)),
+        scale(1.2),
+        color(119, 74, 217),
+    ]);
+    add([
+        text('Fight'),
+        pos(center().sub(-30, 260)),
+        scale(1.2),
+        color(80, 242, 242),
+    ]);
+    addButton("START", vec2(center().x, center().y), () => go("game"));
+    addButton("GLOVES", vec2(center().x, center().y + 100), () => go("gloves"));
+    addButton("RANKING", vec2(center().x, center().y + 200), () => go("leaderboard"));
+});
 
-    onClick("gloves", () => {
-        go("");
-    });
-
-    onClick("leader", () => {
-        go("");
-    });
-})
-
-go("game")
+go("menu");
