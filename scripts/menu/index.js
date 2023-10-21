@@ -87,18 +87,4 @@ scene("game", ({ levelId, coins } = { levelId: 0, coins: 0 }) => {
     });
 })
 
-scene("lose", () => {
-    add([
-        text("You Lose"),
-    ])
-    onKeyPress(() => go("game"))
-})
-
-scene("win", () => {
-    add([
-        text("You Win"),
-    ])
-    onKeyPress(() => go("game"))
-})
-
 go("game")
