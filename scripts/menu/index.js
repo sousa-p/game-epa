@@ -1,7 +1,7 @@
 import { addButton } from "../utils/btn.js";
 
 loadSprite("cog", "../../assets/sprts/menu/cogIcon.svg")
-
+loadSound("main_music", "../../assets/audio/menu/menu-music.mp3")
 
 scene("menu", () => {
     onUpdate(() => setCursor("default"));
@@ -12,15 +12,20 @@ scene("menu", () => {
         area()
     ]);
 
+    const music = play("main_music", {
+        loop: true,
+        paused: false,
+    })
+
     config.onClick(() => {
         go('configs');
     })
 
 
-	config.onHoverUpdate(() => {
-		setCursor("pointer");
-	})
-    
+    config.onHoverUpdate(() => {
+        setCursor("pointer");
+    })
+
     add([
         text('Rhythm'),
         pos(center().sub(120, 260)),
