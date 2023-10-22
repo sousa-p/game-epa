@@ -1,9 +1,9 @@
 import { addButton } from "../utils/btn.js";
 
 const glovesData = [
-    { name: "Common", type: "default", id: 0 },
-    { name: "Classic", type: "classic", id: 1 },
-    { name: "V I P", type: "vip", id: 2 }
+    { name: "Common", type: "default", speed: 0.15, id: 0 },
+    { name: "Classic", type: "classic", speed: .1, id: 1 },
+    { name: "V I P", type: "vip", speed: .05, id: 2 }
 ];
 
 

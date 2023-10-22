@@ -1,13 +1,15 @@
 import { addButton } from "../utils/btn.js";
 
 loadSprite("cog", "../../assets/sprts/menu/cogIcon.svg")
+loadSprite("logo", "../../assets/icon/3ds-logo.png")
 
 const music = play("menu_music", {
     loop: true,
     paused: false,
 });
 
-volume(JSON.parse(localStorage.getItem("volume")) / 100);
+let volumeValue = JSON.parse(localStorage.getItem("volume")) || 50;
+volume(volumeValue / 100);
 
 scene("menu", () => {
     onUpdate(() => setCursor("default"));
@@ -29,16 +31,25 @@ scene("menu", () => {
 
     add([
         text('Rhythm'),
-        pos(center().sub(120, 260)),
+        pos(center().sub(130, 260)),
         scale(1.2),
         color(119, 74, 217),
     ]);
+
     add([
         text('Fight'),
-        pos(center().sub(-30, 260)),
+        pos(center().sub(-20, 260)),
         scale(1.2),
         color(80, 242, 242),
     ]);
+
+    add([
+        sprite("logo"),
+        pos(center().x, center().y-125),
+        anchor("center"),
+        scale(.4)
+    ]);
+
     addButton("START", vec2(center().x, center().y), () => go("game"));
     addButton("GLOVES", vec2(center().x, center().y + 100), () => go("gloves"));
     addButton("RANKING", vec2(center().x, center().y + 200), () => go("leaderboard"));
