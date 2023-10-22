@@ -8,6 +8,7 @@ export function addButton(
   outlineColor = [242, 53, 211],
   fontSize = 28,
   fontColor = [242, 53, 211],
+  font = "fightKick",
   radius = 8
 ) {
   const btn = add([
@@ -23,6 +24,7 @@ export function addButton(
   btn.add([
       text(txt, {
           size: fontSize,
+          font: font
       }),
       anchor("center"),
       color(fontColor),

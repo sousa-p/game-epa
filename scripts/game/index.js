@@ -1,10 +1,20 @@
-import { addButton } from "../utils/btn.js";
 scene("game", () => {
+    const leftBtn = add([
+        rect(212.5, 750),
+        area(),
+        scale(1),
+        anchor("center"),
+        pos(vec2(106.25, 360)),
+        color(BLACK)
+    ]);
 
-    onUpdate(() => setCursor("default"));
-
-    addButton("esquerda", vec2(106.25, 360), () => go("game"), [212.5, 720], [255,0,0], 0, [255, 255, 255], 28, [255, 255, 255]);
-    addButton("direita", vec2(317, 360), () => go("game"), [212.5, 720], [0, 0, 255], 0, [255, 255, 255], 28, [255, 255, 255]);
-
+    const rightBtn = add([
+        rect(212.5, 750),
+        area(),
+        scale(1),
+        anchor("center"),
+        pos(vec2(317, 360)),
+        color(WHITE)
+    ]);
 });
 go("menu");

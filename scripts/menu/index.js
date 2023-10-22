@@ -1,7 +1,11 @@
 import { addButton } from "../utils/btn.js";
 
 loadSprite("cog", "../../assets/sprts/menu/cogIcon.svg")
-loadSound("main_music", "../../assets/audio/menu/menu-music.mp3")
+
+const music = play("menu_music", {
+    loop: true,
+    paused: false,
+});
 
 scene("menu", () => {
     onUpdate(() => setCursor("default"));
@@ -11,11 +15,6 @@ scene("menu", () => {
         pos(340, 20),
         area()
     ]);
-
-    const music = play("main_music", {
-        loop: true,
-        paused: false,
-    })
 
     config.onClick(() => {
         go('configs');

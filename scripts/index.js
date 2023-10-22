@@ -15,3 +15,4 @@ kaboom({
 setBackground(BLACK);
 
 loadFont("fightKick", "../assets/fonts/FightKickDemoRegular.ttf");
+loadSound("menu_music", "../../assets/audio/menu/menu-music.mp3");
