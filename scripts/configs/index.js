@@ -1,6 +1,6 @@
 import { addButton } from "../utils/btn.js";
 
-let volume = JSON.parse(localStorage.getItem("volume")) || 50;
+let volumeValue = JSON.parse(localStorage.getItem("volume")) || 50;
 
 scene("configs", () => {
   onUpdate(() => setCursor("default"));
@@ -28,7 +28,7 @@ scene("configs", () => {
   ]);
 
   let volumeBar = outlineVolume.add([
-    rect(volume*3, 26),
+    rect(volumeValue*3, 26),
     color(29, 182, 242),
     pos(-150,-13)
   ]);
@@ -36,10 +36,11 @@ scene("configs", () => {
   function updateVolume() {
     volumeBar.destroy();
     volumeBar = outlineVolume.add([
-      rect(volume*3, 26),
+      rect(volumeValue*3, 26),
       color(29, 182, 242),
       pos(-150,-13)
     ]);
+    volume(volumeValue / 100);
   }
 
 
@@ -65,7 +66,7 @@ scene("configs", () => {
 	})
 
   addVolume.onClick(() => {
-    if (volume < 100) volume += 5;
+    if (volumeValue < 100) volumeValue += 5;
     updateVolume();
   });
 
@@ -91,12 +92,12 @@ scene("configs", () => {
   ]);
 
   oddVolume.onClick(() => {
-    if (volume > 0) volume -= 5;
+    if (volumeValue > 0) volumeValue -= 5;
     updateVolume();
   });
 
   addButton("Return", vec2(center().x, center().y + 200), () => {
-    localStorage.setItem('volume', JSON.stringify(volume));
+    localStorage.setItem('volume', JSON.stringify(volumeValue));
     go("menu");
   });
 });

@@ -64,5 +64,3 @@ scene("gloves", () => {
         go("menu");
     });
 });
-
-go("gloves");

@@ -7,6 +7,8 @@ const music = play("menu_music", {
     paused: false,
 });
 
+volume(JSON.parse(localStorage.getItem("volume")) / 100);
+
 scene("menu", () => {
     onUpdate(() => setCursor("default"));
 
