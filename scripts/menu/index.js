@@ -36,8 +36,9 @@ scene("menu", () => {
     ]);
 
     addButton("START", vec2(center().x, center().y + 100), () => {
-        go("gameStart");
+        window.GAME = undefined;
         music.paused = true;
+        go("gameStart");
     });
     addButton("GLOVES", vec2(center().x, center().y + 200), () => go("gloves"));
     addButton("CONFIGS", vec2(center().x, center().y + 300), () => go("configs"));

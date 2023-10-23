@@ -1,11 +1,10 @@
 import { addButton } from "../utils/btn.js";
 
 const glovesData = [
-    { name: "Common", type: "default", speed: 0.15, id: 0 },
-    { name: "Classic", type: "classic", speed: .125, id: 1 },
-    { name: "V I P", type: "vip", speed: .1, id: 2 }
+    { name: "Common", type: "default", speed: .1, life: 5, id: 0 },
+    { name: "Classic", type: "classic", speed: .1, life: 3, id: 1 },
+    { name: "V I P", type: "vip", speed: .1, life: 1, id: 2 }
 ];
-
 
 glovesData.forEach(glove => {
     loadSprite(glove.type, `../../assets/sprts/gloves/${glove.type}-gloves/${glove.type}-preview.png`);

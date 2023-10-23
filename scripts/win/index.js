@@ -1,17 +1,17 @@
 import { addButton } from "../utils/btn.js";
 
-scene("gameOver", () => {
+scene("win", () => {
   addButton("RETRY", vec2(center().x, center().y + 100), () => {
     go("gameStart")
     window.GAME = undefined;
   });
 
-  addButton("GIVE UP", vec2(center().x, center().y + 200), () => {
+  addButton("GO MENU", vec2(center().x, center().y + 200), () => {
     go("menu");
   });
 
   add([
-    text("GAME OVER", {
+    text("YOU WIN", {
       size: 64
     }),
     anchor("center"),
