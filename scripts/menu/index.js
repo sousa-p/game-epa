@@ -1,7 +1,7 @@
-import { addButton } from "./utils/btn.js";
+import { addButton } from "../utils/btn.js";
 
-loadSprite("logo", "./../assets/icon/3ds-logo.png")
-loadSound("menu_music", "./../assets/audio/menu/menu-music.mp3");
+loadSprite("logo", "../../assets/icon/3ds-logo.png")
+loadSound("menu_music", "../../assets/audio/menu/menu-music.mp3");
 
 const music = play("menu_music", {
     loop: true,
@@ -38,6 +38,8 @@ scene("menu", () => {
     addButton("START", vec2(center().x, center().y + 100), () => {
         window.GAME = undefined;
         music.paused = true;
+        
+
         go("gameStart");
     });
     addButton("GLOVES", vec2(center().x, center().y + 200), () => go("gloves"));

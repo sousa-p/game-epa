@@ -1,4 +1,4 @@
-import { addButton } from "./utils/btn.js";
+import { addButton } from "../utils/btn.js";
 
 scene("win", () => {
   addButton("RETRY", vec2(center().x, center().y + 100), () => {

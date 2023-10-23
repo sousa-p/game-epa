@@ -11,6 +11,7 @@ export function addButton(
   font = "fightKick",
   radius = 8
 ) {
+  loadSound("click", "../../assets/audio/menu/button-sound.mp3");
   const btn = add([
       rect(...tamanho, { radius: radius }),
       pos(position),
@@ -39,7 +40,15 @@ export function addButton(
 		btn.scale = vec2(1);
 	})
 
-  btn.onClick(funcClick);
+  btn.onClick(
+    () => {
+      play("click", {
+        loop: false,
+        paused: false
+      });
+      funcClick();
+    }
+  );
 
   return btn;
 }

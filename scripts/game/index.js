@@ -1,10 +1,12 @@
 import { addButton } from "../utils/btn.js";
 
-loadSound("count", "./../assets/audio/gameplay/count.mp3");
-loadSprite("enemyLeftGlove", "./../assets/sprts/enemy/gloves/enemy-left-gloves.png");
-loadSprite("enemyRightGlove", "./../assets/sprts/enemy/gloves/enemy-right-gloves.png");
-loadSprite("alertAttackLeft", "./../assets/sprts/screen-elements/alert-attack-left.png");
-loadSprite("alertAttackRight", "./../assets/sprts/screen-elements/alert-attack-right.png");
+loadSound("count", "../../assets/audio/gameplay/count.mp3");
+loadSound("enemyDeath", "../../assets/audio/gameplay/death-enemy.mp3");
+loadSound("enemyDamage", "../../assets/audio/gameplay/damage-enemy.mp3");
+loadSprite("enemyLeftGlove", "../../assets/sprts/enemy/gloves/enemy-left-gloves.png");
+loadSprite("enemyRightGlove", "../../assets/sprts/enemy/gloves/enemy-right-gloves.png");
+loadSprite("alertAttackLeft", "../../assets/sprts/screen-elements/alert-attack-left.png");
+loadSprite("alertAttackRight", "../../assets/sprts/screen-elements/alert-attack-right.png");
 
 
 
@@ -40,17 +42,17 @@ scene("onGame", () => {
             {
                 NAME: 'nerdy',
                 LIFE: 50,
-                PUNCH_PERIOD: .7
+                PUNCH_PERIOD: .4
             },
             {
                 NAME: 'bigas',
                 LIFE: 30,
-                PUNCH_PERIOD: .4
+                PUNCH_PERIOD: .3
             },
             {
                 NAME: 'laura',
                 LIFE: 20,
-                PUNCH_PERIOD: 1
+                PUNCH_PERIOD: .6
             },
         ];
 
@@ -69,7 +71,6 @@ scene("onGame", () => {
 
         window.GAME.GLOVE = JSON.parse(localStorage.getItem("glove")) || { name: "Common", type: "default", speed: .1, life: 5, id: 0 };
 
-
         loadSprite("gloveLeft", `../../assets/sprts/gloves/${window.GAME.GLOVE.type}-gloves/${window.GAME.GLOVE.type}-left.png`);
         loadSprite("gloveRight", `../../assets/sprts/gloves/${window.GAME.GLOVE.type}-gloves/${window.GAME.GLOVE.type}-right.png`);
         loadSound("music", `../../assets/audio/gameplay/music-${musicSelected}.mp3`);
@@ -80,61 +81,18 @@ scene("onGame", () => {
     } else {
         window.GAME.MUSIC.paused = false;
     }
-
+    
     function hit() {
         shake(25);
         addKaboom(center());
         if (window.GAME.GLOVE.life) window.GAME.GLOVE.life -= 1;
         life.text = "X ".repeat(window.GAME.GLOVE.life);
         
-        if (!window.GAME.GLOVE.life) go("gameOver");
+        if (!window.GAME.GLOVE.life) {
+            window.GAME.MUSIC.paused = true;
+            go("gameOver")
+        };
     }
-
-    function attackAlert(dir) {
-        window.GAME.PUCHING = (dir) ? 'right' : 'left';
-
-        const alertSprt = (dir)
-            ? add([
-                sprite("alertAttackRight"),
-                area(),
-                scale(.7),
-                anchor("center"),
-                pos(vec2(317, 360)),
-                z(100)
-            ])
-            : add([
-                sprite("alertAttackLeft"),
-                area(),
-                anchor("center"),
-                scale(.7),
-                pos(vec2(106.25, 360)),
-                z(100)
-            ]);
-
-        wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
-            destroy(alertSprt);
-            
-            (!window.GAME.PUNCH) ? hit() : window.GAME.HITS += 1;
-            
-            window.GAME.PUNCH = false;
-            window.GAME.ENEMY.PUNCH_PERIOD -= window.GAME.HITS / 1000;
-            if (window.GAME.HITS >= window.GAME.ENEMY.LIFE) {
-                enemyBody.use(sprite("enemyDeath"));
-
-                wait(2, () => {
-                    go('win');
-                });
-            } else {
-                wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
-                    attackAlert(Math.round(Math.random()));
-                });
-            }
-        });
-    }
-
-    wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
-        attackAlert(Math.round(Math.random()));
-    });
 
     const leftBtn = add([
         rect(212.5, 750),
@@ -191,7 +149,8 @@ scene("onGame", () => {
 
     leftBtn.onClick(() => {
         if (window.GAME.PUCHING === 'left') {
-            window.GAME.PUNCH = true
+            destroy(window.GAME.ALERT);
+            window.GAME.PUNCH = true;
             shake(10);
             gloveLeft.tween(gloveLeft.pos, center(), window.GAME.GLOVE.speed, (p) => gloveLeft.pos = p, easings.easeOutBounce)
             wait(window.GAME.GLOVE.speed, () => {
@@ -205,6 +164,7 @@ scene("onGame", () => {
 
     rightBtn.onClick(() => {
         if (window.GAME.PUCHING === 'right') {
+            destroy(window.GAME.ALERT);
             window.GAME.PUNCH = true;
             shake(10);
             gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
@@ -247,6 +207,60 @@ scene("onGame", () => {
         color(WHITE),
         pos(30, 130)
     ]);
+
+    function attackAlert(dir) {
+        window.GAME.PUCHING = (dir) ? 'right' : 'left';
+
+        window.GAME.ALERT = (dir)
+            ? add([
+                sprite("alertAttackRight"),
+                area(),
+                scale(.7),
+                anchor("center"),
+                pos(vec2(317, 360)),
+                z(100)
+            ])
+            : add([
+                sprite("alertAttackLeft"),
+                area(),
+                anchor("center"),
+                scale(.7),
+                pos(vec2(106.25, 360)),
+                z(100)
+            ]);
+
+        wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
+            (!window.GAME.PUNCH) ? hit() : window.GAME.HITS += 1;
+            destroy(window.GAME.ALERT);
+            play("enemyDamage", {
+                loop: false,
+                paused: false
+            });
+            
+            window.GAME.PUNCH = false;
+            window.GAME.ENEMY.PUNCH_PERIOD -= window.GAME.HITS / 1000;
+            if (window.GAME.HITS >= window.GAME.ENEMY.LIFE) {
+                window.GAME.MUSIC.paused = true;
+                play("enemyDeath", {
+                    loop: false,
+                    paused: false
+                })
+                enemyBody.use(sprite("enemyDeath"));
+
+                wait(2, () => {
+                    go("win");
+                });
+            } else {
+                wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
+                    attackAlert(Math.round(Math.random()));
+                });
+            }
+        });
+    }
+
+    wait(window.GAME.ENEMY.PUNCH_PERIOD, () => {
+        attackAlert(Math.round(Math.random()));
+    });
 });
 
 scene("pause", () => {
