@@ -84,12 +84,10 @@ scene("onGame", () => {
     function hit() {
         shake(25);
         addKaboom(center());
-        window.GAME.GLOVE.life -= 1;
+        if (window.GAME.GLOVE.life) window.GAME.GLOVE.life -= 1;
         life.text = "X ".repeat(window.GAME.GLOVE.life);
-
-        if (!window.GAME.GLOVE.life) {
-            go("gameOver");
-        }
+        
+        if (!window.GAME.GLOVE.life) go("gameOver");
     }
 
     function attackAlert(dir) {
