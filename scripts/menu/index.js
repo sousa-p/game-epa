@@ -2,6 +2,7 @@ import { addButton } from "../utils/btn.js";
 
 loadSprite("cog", "../../assets/sprts/menu/cogIcon.svg")
 loadSprite("logo", "../../assets/icon/3ds-logo.png")
+loadSound("menu_music", "../../assets/audio/menu/menu-music.mp3");
 
 const music = play("menu_music", {
     loop: true,
@@ -50,7 +51,10 @@ scene("menu", () => {
         scale(.4)
     ]);
 
-    addButton("START", vec2(center().x, center().y), () => go("game"));
+    addButton("START", vec2(center().x, center().y), () => {
+        go("gameStart");
+        music.paused = true;
+    });
     addButton("GLOVES", vec2(center().x, center().y + 100), () => go("gloves"));
     addButton("RANKING", vec2(center().x, center().y + 200), () => go("leaderboard"));
 });
