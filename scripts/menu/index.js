@@ -17,7 +17,7 @@ scene("menu", () => {
 
     const config = add([
         sprite("cog"),
-        pos(340, 20),
+        pos(340, 50),
         area()
     ]);
 

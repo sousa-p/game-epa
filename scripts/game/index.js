@@ -1,3 +1,5 @@
+import { addButton } from "../utils/btn.js";
+
 loadSound("count", "../../assets/audio/gameplay/count.mp3")
 
 scene("gameStart", () => {
@@ -25,23 +27,44 @@ scene("gameStart", () => {
     })
 });
 
+scene("pause", () => {
+    window.GAME.MUSIC.paused = true;
+
+    
+    addButton("CONTINUE", vec2(center().x, center().y), () => go("gameStart"));
+    
+    addButton("GIVE UP", vec2(center().x, center().y + 100), () => go("menu"));
+    
+    add([
+        text("PAUSED", {
+            size: 64
+        }),
+        anchor("center"),
+        pos(center().sub(0, 130))
+    ]);
+});
+
 scene("onGame", () => {
-    const music = Math.round(Math.random() + 1);
-    const glove = JSON.parse(localStorage.getItem("glove")) || { name: "Common", type: "default", id: 0 };
+    if (!window.GAME) {
+        const musicSelected = Math.round(Math.random() + 1);
 
-    const game = {
-        SPEED: 1,
-        POINTS: 0,
+        window.GAME = {
+            SPEED: 1,
+            POINTS: 0,
+        };
+
+        window.GAME.GLOVE = JSON.parse(localStorage.getItem("glove")) || { name: "Common", type: "default", id: 0 };
+    
+        loadSprite("gloveLeft", `../../assets/sprts/gloves/${window.GAME.GLOVE.type}-gloves/${window.GAME.GLOVE.type}-left.png`);
+        loadSprite("gloveRight", `../../assets/sprts/gloves/${window.GAME.GLOVE.type}-gloves/${window.GAME.GLOVE.type}-right.png`);
+        loadSound("music", `../../assets/audio/gameplay/music-${musicSelected}.mp3`);
+    
+        window.GAME.MUSIC = play("music", {
+            loop: true,
+        });
+    } else {
+        window.GAME.MUSIC.paused = false;
     }
-
-    loadSprite("gloveLeft", `../../assets/sprts/gloves/${glove.type}-gloves/${glove.type}-left.png`);
-    loadSprite("gloveRight", `../../assets/sprts/gloves/${glove.type}-gloves/${glove.type}-right.png`);
-    loadSound("music", `../../assets/audio/gameplay/music-${music}.mp3`);
-
-    play("music", {
-        loop: true,
-        paused: false,
-    })
 
     const leftBtn = add([
         rect(212.5, 750),
@@ -63,19 +86,37 @@ scene("onGame", () => {
 
     rightBtn.onClick(() => {
         shake(7);
-        gloveRight.tween(gloveRight.pos, center(), glove.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
-        wait(glove.speed, () => {
-            gloveRight.tween(gloveRight.pos, vec2(center().x + 100, 620), glove.speed / 3, (p) => gloveRight.pos = p)
+        gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
+        wait(window.GAME.GLOVE.speed, () => {
+            gloveRight.tween(gloveRight.pos, vec2(center().x + 100, 620), window.GAME.GLOVE.speed / 3, (p) => gloveRight.pos = p)
         });
     });
 
     leftBtn.onClick(() => {
         shake(7);
-        gloveLeft.tween(gloveLeft.pos, center(), glove.speed, (p) => gloveLeft.pos = p, easings.easeOutBounce)
-        wait(glove.speed, () => {
-            gloveLeft.tween(gloveLeft.pos, vec2(center().x - 100, 620), glove.speed/3, (p) => gloveLeft.pos = p)
+        gloveLeft.tween(gloveLeft.pos, center(), window.GAME.GLOVE.speed, (p) => gloveLeft.pos = p, easings.easeOutBounce)
+        wait(window.GAME.GLOVE.speed, () => {
+            gloveLeft.tween(gloveLeft.pos, vec2(center().x - 100, 620), window.GAME.GLOVE.speed/3, (p) => gloveLeft.pos = p)
         });
     });
+
+    const gloveLeft = add([
+        sprite("gloveLeft"),
+        scale(.2),
+        anchor("center"),
+        pos(vec2(center().x - 100, 620)),
+        timer(),
+        z(50)
+    ]);
+
+    const gloveRight = add([
+        sprite("gloveRight"),
+        scale(.2),
+        anchor("center"),
+        pos(vec2(center().x + 100, 620)),
+        timer(),
+        z(50)
+    ]);
 
     const enemyBody = add([
         circle(115),
@@ -97,22 +138,15 @@ scene("onGame", () => {
         color(RED),
         anchor("center")
     ])
-
-    const gloveLeft = add([
-        sprite("gloveLeft"),
-        scale(.2),
-        anchor("center"),
-        pos(vec2(center().x - 100, 620)),
-        timer()
-    ]);
-
-    const gloveRight = add([
-        sprite("gloveRight"),
-        scale(.2),
-        anchor("center"),
-        pos(vec2(center().x + 100, 620)),
-        timer()
-    ]);
     
+    const pause = add([
+        text("PAUSE"),
+        color(BLACK),
+        pos(300, 50),
+        area()
+    ]);
 
+    pause.onClick(() => {
+        go("pause");
+    })
 });
