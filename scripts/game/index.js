@@ -52,7 +52,7 @@ scene("onGame", () => {
             {
                 NAME: 'laura',
                 LIFE: 20,
-                PUNCH_PERIOD: .6
+                PUNCH_PERIOD: .55
             },
         ];
 
@@ -85,7 +85,8 @@ scene("onGame", () => {
     function hit() {
         shake(25);
         addKaboom(center());
-        if (window.GAME.GLOVE.life) window.GAME.GLOVE.life -= 1;
+        if (window.GAME.GLOVE.life && window.GAME.PUCHING) window.GAME.GLOVE.life -= 1;
+        window.GAME.PUCHING = false;
         life.text = "X ".repeat(window.GAME.GLOVE.life);
         
         if (!window.GAME.GLOVE.life) {
@@ -147,7 +148,8 @@ scene("onGame", () => {
         });
     }
 
-    leftBtn.onClick(() => {
+
+    function attackLeft() {
         if (window.GAME.PUCHING === 'left') {
             destroy(window.GAME.ALERT);
             window.GAME.PUNCH = true;
@@ -160,14 +162,22 @@ scene("onGame", () => {
         } else {
             hit();
         }
+    }
+
+    leftBtn.onClick(() => {
+        attackLeft();
     });
 
-    rightBtn.onClick(() => {
+    onKeyDown("left", () => {
+        attackLeft();
+    });
+
+    function attackRight() {
         if (window.GAME.PUCHING === 'right') {
             destroy(window.GAME.ALERT);
             window.GAME.PUNCH = true;
             shake(10);
-            gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
+            gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce);
             wait(window.GAME.GLOVE.speed, () => {
                 enemyDamage('Right');
                 gloveRight.tween(gloveRight.pos, vec2(center().x + 100, 620), window.GAME.GLOVE.speed / 2, (p) => gloveRight.pos = p)
@@ -175,7 +185,15 @@ scene("onGame", () => {
         } else {
             hit();
         }
+    }
+
+    rightBtn.onClick(() => {
+        attackRight();
     });
+
+    onKeyDown("right", () => {
+        attackRight();
+    })
 
     add([
         sprite("enemyLeftGlove"),
