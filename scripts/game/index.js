@@ -1,6 +1,11 @@
 import { addButton } from "../utils/btn.js";
 
 loadSound("count", "../../assets/audio/gameplay/count.mp3")
+loadSprite("nerdyDeath", "../../assets/sprts/enemy/nerdy/expressions/nerdy-death.png");
+loadSprite("nerdyDefault", "../../assets/sprts/enemy/nerdy/expressions/nerdy-default.png");
+loadSprite("nerdyDemageLeft", "../../assets/sprts/enemy/nerdy/expressions/nerdy-demage-left.png");
+loadSprite("nerdyDemageRight", "../../assets/sprts/enemy/nerdy/expressions/nerdy-demage-right.png");
+
 
 scene("gameStart", () => {
     play("count", {
@@ -23,6 +28,7 @@ scene("gameStart", () => {
         });
     });
     wait(count.length, () => {
+        window.GAME = undefined;
         go("onGame");
     })
 });
@@ -52,36 +58,22 @@ scene("onGame", () => {
     const leftBtn = add([
         rect(212.5, 750),
         area(),
+        outline(8, WHITE),
         scale(1),
         anchor("center"),
         pos(vec2(106.25, 360)),
-        color(GREEN)
+        color(BLACK)
     ]);
 
     const rightBtn = add([
         rect(212.5, 750),
         area(),
+        outline(8, WHITE),
         scale(1),
         anchor("center"),
         pos(vec2(317, 360)),
-        color(WHITE)
+        color(BLACK)
     ]);
-    
-    rightBtn.onClick(() => {
-        shake(7);
-        gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
-        wait(window.GAME.GLOVE.speed, () => {
-            gloveRight.tween(gloveRight.pos, vec2(center().x + 100, 620), window.GAME.GLOVE.speed / 3, (p) => gloveRight.pos = p)
-        });
-    });
-    
-    leftBtn.onClick(() => {
-        shake(7);
-        gloveLeft.tween(gloveLeft.pos, center(), window.GAME.GLOVE.speed, (p) => gloveLeft.pos = p, easings.easeOutBounce)
-        wait(window.GAME.GLOVE.speed, () => {
-            gloveLeft.tween(gloveLeft.pos, vec2(center().x - 100, 620), window.GAME.GLOVE.speed/3, (p) => gloveLeft.pos = p)
-        });
-    });
     
     const gloveLeft = add([
         sprite("gloveLeft"),
@@ -102,11 +94,37 @@ scene("onGame", () => {
     ]);
 
     const enemyBody = add([
-        circle(115),
+        sprite("nerdyDefault"),
+        scale(.2),
         pos(center()),
-        color(BLACK),
-        anchor("center")
-    ])
+        anchor("center"),
+        timer()
+    ]);
+
+    function enemyDamage(dir) {
+        enemyBody.use(sprite(`nerdyDemage${dir}`));
+        enemyBody.wait(1, () => {
+            enemyBody.use(sprite("nerdyDefault"));
+        });
+    }
+
+    leftBtn.onClick(() => {
+        shake(10);
+        gloveLeft.tween(gloveLeft.pos, center(), window.GAME.GLOVE.speed, (p) => gloveLeft.pos = p, easings.easeOutBounce)
+        wait(window.GAME.GLOVE.speed, () => {
+            enemyDamage('Left');
+            gloveLeft.tween(gloveLeft.pos, vec2(center().x - 100, 620), window.GAME.GLOVE.speed/2, (p) => gloveLeft.pos = p)
+        });
+    });
+
+    rightBtn.onClick(() => {
+        shake(10);
+        gloveRight.tween(gloveRight.pos, center(), window.GAME.GLOVE.speed, (p) => gloveRight.pos = p, easings.easeOutBounce)
+        wait(window.GAME.GLOVE.speed, () => {
+            enemyDamage('Right');
+            gloveRight.tween(gloveRight.pos, vec2(center().x + 100, 620), window.GAME.GLOVE.speed / 2, (p) => gloveRight.pos = p)
+        });
+    });
     
     const enemyLeftGlove = add([
         circle(55),
@@ -124,7 +142,7 @@ scene("onGame", () => {
     
     const pause = add([
         text("PAUSE"),
-        color(BLACK),
+        color(119, 74, 217),
         pos(300, 130),
         area()
     ]);
