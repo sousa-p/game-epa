@@ -41,12 +41,12 @@ scene("onGame", () => {
         const enemies = [
             {
                 NAME: 'nerdy',
-                LIFE: 50,
+                LIFE: 35,
                 PUNCH_PERIOD: .4
             },
             {
                 NAME: 'bigas',
-                LIFE: 30,
+                LIFE: 25,
                 PUNCH_PERIOD: .3
             },
             {
@@ -87,7 +87,7 @@ scene("onGame", () => {
         addKaboom(center());
         if (window.GAME.GLOVE.life && window.GAME.PUCHING) window.GAME.GLOVE.life -= 1;
         window.GAME.PUCHING = false;
-        life.text = "X ".repeat(window.GAME.GLOVE.life);
+        life.text = "♥ ".repeat(window.GAME.GLOVE.life);
         
         if (!window.GAME.GLOVE.life) {
             window.GAME.MUSIC.paused = true;
@@ -221,8 +221,10 @@ scene("onGame", () => {
     });
 
     const life = add([
-        text("X ".repeat(window.GAME.GLOVE.life)),
-        color(WHITE),
+        text("♥ ".repeat(window.GAME.GLOVE.life), {
+            font: "arial"
+        }),
+        color(242, 53, 211),
         pos(30, 130)
     ]);
 
@@ -256,7 +258,7 @@ scene("onGame", () => {
             });
             
             window.GAME.PUNCH = false;
-            window.GAME.ENEMY.PUNCH_PERIOD -= window.GAME.HITS / 1000;
+            window.GAME.ENEMY.PUNCH_PERIOD -= window.GAME.HITS * 0.00025;
             if (window.GAME.HITS >= window.GAME.ENEMY.LIFE) {
                 window.GAME.MUSIC.paused = true;
                 play("enemyDeath", {

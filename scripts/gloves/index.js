@@ -2,8 +2,8 @@ import { addButton } from "../utils/btn.js";
 
 const glovesData = [
     { name: "Common", type: "default", speed: .1, life: 5, id: 0 },
-    { name: "Classic", type: "classic", speed: .1, life: 3, id: 1 },
-    { name: "V I P", type: "vip", speed: .1, life: 1, id: 2 }
+    { name: "Classic", type: "classic", speed: .08, life: 3, id: 1 },
+    { name: "V I P", type: "vip", speed: .05, life: 1, id: 2 }
 ];
 
 glovesData.forEach(glove => {
