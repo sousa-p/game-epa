@@ -1,4 +1,4 @@
-import { addButton } from "../utils/btn.js";
+import { addButton } from "./utils/btn.js";
 
 const glovesData = [
     { name: "Common", type: "default", speed: .1, life: 5, id: 0 },
@@ -7,7 +7,7 @@ const glovesData = [
 ];
 
 glovesData.forEach(glove => {
-    loadSprite(glove.type, `../../assets/sprts/gloves/${glove.type}-gloves/${glove.type}-preview.png`);
+    loadSprite(glove.type, `./../assets/sprts/gloves/${glove.type}-gloves/${glove.type}-preview.png`);
 });
 
 scene("gloves", () => {

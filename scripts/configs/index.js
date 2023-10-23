@@ -1,4 +1,4 @@
-import { addButton } from "../utils/btn.js";
+import { addButton } from "./utils/btn.js";
 
 let volumeValue = JSON.parse(localStorage.getItem("volume")) || 50;
 

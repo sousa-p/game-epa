@@ -1,7 +1,7 @@
-import { addButton } from "../utils/btn.js";
+import { addButton } from "./utils/btn.js";
 
-loadSprite("logo", "../../assets/icon/3ds-logo.png")
-loadSound("menu_music", "../../assets/audio/menu/menu-music.mp3");
+loadSprite("logo", "./../assets/icon/3ds-logo.png")
+loadSound("menu_music", "./../assets/audio/menu/menu-music.mp3");
 
 const music = play("menu_music", {
     loop: true,

@@ -1,10 +1,10 @@
 import { addButton } from "../utils/btn.js";
 
-loadSound("count", "../../assets/audio/gameplay/count.mp3");
-loadSprite("enemyLeftGlove", "../../assets/sprts/enemy/gloves/enemy-left-gloves.png");
-loadSprite("enemyRightGlove", "../../assets/sprts/enemy/gloves/enemy-right-gloves.png");
-loadSprite("alertAttackLeft", "../../assets/sprts/screen-elements/alert-attack-left.png");
-loadSprite("alertAttackRight", "../../assets/sprts/screen-elements/alert-attack-right.png");
+loadSound("count", "./../assets/audio/gameplay/count.mp3");
+loadSprite("enemyLeftGlove", "./../assets/sprts/enemy/gloves/enemy-left-gloves.png");
+loadSprite("enemyRightGlove", "./../assets/sprts/enemy/gloves/enemy-right-gloves.png");
+loadSprite("alertAttackLeft", "./../assets/sprts/screen-elements/alert-attack-left.png");
+loadSprite("alertAttackRight", "./../assets/sprts/screen-elements/alert-attack-right.png");
 
 
 
