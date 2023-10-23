@@ -14,4 +14,4 @@ kaboom({
 
 setBackground(BLACK);
 
-loadFont("fightKick", "../assets/fonts/FightKickDemoRegular.ttf");
+loadFont("fightKick", "./assets/fonts/FightKickDemoRegular.ttf");
